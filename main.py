@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
 import logging
+from pathlib import Path
 
+import requests
 from telegram import Update, ForceReply
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 
@@ -33,7 +35,14 @@ def start(engine: Update, context: CallbackContext) -> None:
 # другой обработчик - для команды /help. Когда пользователь вводит /help, вызывается этот код
 def help_command(engine: Update, context: CallbackContext) -> None:
     # отправляем какой-то стандартный жестко заданный текст
-    engine.message.reply_text('Помощь!')
+    engine.message.reply_text('Тут блять ПОМОЩЬЬЬЬЬ Помощь!')
+
+
+def get_dog(engine: Update, context: CallbackContext) -> None:
+    ret = requests.get('https://random.dog/woof.json')
+    random_photo_url = ret.json()['url']
+    print(random_photo_url)
+    engine.message.reply_photo(random_photo_url)
 
 
 def echo(engine: Update, context: CallbackContext) -> None:
@@ -51,7 +60,7 @@ def main() -> None:
     #
     # я назвал его engine (движок), чтобы было понятнее. В самой либе (библиотеке, фреймворке)
     # он называется Updater, как видно, что немного запутывает
-    engine = Updater("вставить токен тут")
+    engine = Updater("6395488889:AAGxmOqzg9FkTRRocjCLQUs7_ROB0Y4A0yk")
 
     # получаем объект "передатчика" или обработчика сообщений от нашего движка
     dispatcher = engine.dispatcher
@@ -64,6 +73,7 @@ def main() -> None:
     # пользователь будет выбирать соответствующие команды
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("help", help_command))
+    dispatcher.add_handler(CommandHandler("dog", get_dog))
 
     # говорим обработчику сообений, чтобы он вызывал функцию echo каждый раз,
     # когда пользователь отправляем боту сообщение
