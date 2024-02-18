@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 import logging
+import pickle
+import random
 from pathlib import Path
 
 import requests
@@ -13,6 +15,9 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+DOG_FACTS = list()
+with open('dog_facts_rus.pkl', 'rb') as f:
+    DOG_FACTS = pickle.load(f)
 
 # это обработчики команд (handler-ы). Обычно приниают вот эти два параметра, которые содержат нужный
 # контекст, то есть необъодимые для нас переменные (типа, имени пользователя, его ID и так далее), и
@@ -35,14 +40,15 @@ def start(engine: Update, context: CallbackContext) -> None:
 # другой обработчик - для команды /help. Когда пользователь вводит /help, вызывается этот код
 def help_command(engine: Update, context: CallbackContext) -> None:
     # отправляем какой-то стандартный жестко заданный текст
-    engine.message.reply_text('Тут блять ПОМОЩЬЬЬЬЬ Помощь!')
+    engine.message.reply_text('Помощь!')
 
 
 def get_dog(engine: Update, context: CallbackContext) -> None:
     ret = requests.get('https://random.dog/woof.json')
     random_photo_url = ret.json()['url']
-    print(random_photo_url)
-    engine.message.reply_photo(random_photo_url)
+    dog_fact = random.choice(DOG_FACTS)
+    print(random_photo_url + dog_fact)
+    engine.message.reply_photo(random_photo_url, caption=dog_fact)
 
 
 def echo(engine: Update, context: CallbackContext) -> None:
