@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
 import logging
+import os
 import pickle
 import random
-from pathlib import Path
 
 import requests
 from telegram import Update, ForceReply
@@ -15,9 +15,12 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+BOT_TOKEN = os.environ.get('DP_DOGGY_DOG_BOT_TOKEN')
+
 DOG_FACTS = list()
 with open('dog_facts_rus.pkl', 'rb') as f:
     DOG_FACTS = pickle.load(f)
+
 
 # это обработчики команд (handler-ы). Обычно приниают вот эти два параметра, которые содержат нужный
 # контекст, то есть необъодимые для нас переменные (типа, имени пользователя, его ID и так далее), и
@@ -66,7 +69,7 @@ def main() -> None:
     #
     # я назвал его engine (движок), чтобы было понятнее. В самой либе (библиотеке, фреймворке)
     # он называется Updater, как видно, что немного запутывает
-    engine = Updater("6395488889:AAGxmOqzg9FkTRRocjCLQUs7_ROB0Y4A0yk")
+    engine = Updater(BOT_TOKEN)
 
     # получаем объект "передатчика" или обработчика сообщений от нашего движка
     dispatcher = engine.dispatcher
