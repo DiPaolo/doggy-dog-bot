@@ -1,3 +1,3 @@
 # Doggy-Dog Telegram Bot
 
-[tg.me/@dp_doggy_dog_bot](tg.me/@dp_doggy_dog_bot)
+[https://t.me/dp_doggy_dog_bot](t.me/dp_doggy_dog_bot)
